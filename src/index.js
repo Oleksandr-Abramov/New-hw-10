@@ -16,7 +16,12 @@ searchBox.addEventListener(
 function onSearchCountries(evt) {
   countryList.innerHTML = '';
   countryInfo.innerHTML = '';
-  const input = evt.target.value;
+  const input = evt.target.value.trim();
+
+  if (input === '') {
+    return;
+  }
+
   fetchCountries(input)
     .then(getCountries)
     .catch(error => {
@@ -40,11 +45,13 @@ function getCountries(arr) {
 
 function sortCountries(counties) {
   if (counties.length > 10) {
-    Notify.info('Too many matches found. Please enter a more specific name.');
+    return Notify.info(
+      'Too many matches found. Please enter a more specific name.'
+    );
   } else if (counties.length <= 10 && counties.length >= 2) {
-    marcupForManyCountries(counties);
+    return marcupForManyCountries(counties);
   } else {
-    marcupForOneCountry(counties);
+    return marcupForOneCountry(counties);
   }
 }
 
